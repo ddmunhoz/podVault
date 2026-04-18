@@ -132,7 +132,7 @@ class PodVault:
             return
         
         except (FileNotFoundError, json.JSONDecodeError, pydantic.ValidationError, ValueError) as e:
-            self.logger.critical(f"Could not load or parse config file: {e}", console=True)
+            self.logger.critical(f"Could not load or parse config file: {e}")
     
         raise RuntimeError("Failed to load config.")
 
