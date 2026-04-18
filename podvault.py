@@ -132,7 +132,7 @@ class PodVault:
             return
         
         except (FileNotFoundError, json.JSONDecodeError, pydantic.ValidationError, ValueError) as e:
-            self.logger.critical(f"Could not load or parse config file: {e}", console=True)
+            self.logger.critical(f"Could not load or parse config file: {e}")
     
         raise RuntimeError("Failed to load config.")
 
@@ -340,14 +340,6 @@ class PodVault:
     def _process_podcast_show(self, podcast_config: dict):
         """Fetches and downloads all episodes for a single configured show."""
         episode_list = self._get_show_episodes(podcast_config)
-     
-        manual_episodes = podcast_config.get("manual_episode_list")
-        if manual_episodes:
-            if podcast_config.get("manual_only") == True:
-                episode_list = manual_episodes
-            else:
-                # Add manual episodes without duplicates
-                episode_list.extend(x for x in manual_episodes if x not in episode_list)
 
         if not episode_list:
             self.logger.info(f"No new episodes found for '{podcast_config['name']}'.")

@@ -16,10 +16,8 @@ class podcastEntry(pydantic.BaseModel):
     filter: bool = False  
     filter_Include: List[str] = []
     filter_Exclude: List[str] = []
-    manual_only: bool = False 
-    manual_episode_list: List[str] = []
 
-class podcastConfig(pydantic.BaseModel):
+class podcastConfig(pydantic.BaseModel) :
     podcast: List[podcastEntry]
 
 class appConfig(pydantic.BaseModel):
@@ -43,9 +41,9 @@ class appConfig(pydantic.BaseModel):
     notifyErrors: bool = True
     logLevel: Annotated[str, pydantic.Field(pattern=r'^(DEBUG|INFO|WARNING|ERROR|CRITICAL)$')] = "INFO"
     checkInterval: Annotated[int, pydantic.Field(gt=0)] = 300  
-    signalSender: str
-    signalGroup: str
-    signalEndpoint: pydantic.HttpUrl
+    signalSender: Optional[str] = None
+    signalGroup: Optional[str] = None
+    signalEndpoint: Optional[pydantic.HttpUrl] = None
     validated_podcast_data: Optional[podcastConfig] = None
 
 
