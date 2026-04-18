@@ -25,40 +25,97 @@ I built **PodVault** to help you keep a little piece of the record for yourself,
 
 ## Configuration
 
-The app looks for two files in the `config/` directory.
+The app looks for two files in a `config/` directory located in the same folder as the script.
 
 ### 1. `config.json` (Global Settings)
 This file controls the behavior of the application itself and the notification system.
 
-| Option | Description |
-| :--- | :--- |
-| `urlFile` | Path to your podcast list (usually `/config/urls.json`). |
-| `checkInterval` | Minutes to wait between each full check of your podcast list. |
-| `logLevel` | Sets verbosity. Options: `info`, `debug`, `warning`, `error`. |
-| `notifySignal` | Boolean (`true`/`false`). Enables Signal notifications. Requires the [signal-cli-rest-api](https://github.com/bbernhard/signal-cli-rest-api) deployed as a separate container. |
-| ↳ `notifyErrors` | If true, the bot will message you if the script crashes (Requires `notifySignal`). |
-| ↳ `signalSender` | The phone number registered with your Signal API. |
-| ↳ `signalGroup` | The Base64 Group ID where notifications should be sent. |
-| ↳ `signalEndpoint` | The URL of your Signal API container. |
+| Option | Required | Default | Description |
+| :--- | :---: | :--- | :--- |
+| `urlFile` | **Yes** | - | Path to your podcast list (e.g., `/config/urls.json`). |
+| `checkInterval` | No | `300` | Minutes to wait between each full check of your podcast list. |
+| `logLevel` | No | `"info"` | Sets verbosity. Options: `info`, `debug`, `warning`, `error`. |
+| `notifySignal` | No | `false` | Enables Signal notifications. Requires an external container. |
+| ↳ `notifyErrors` | No | `true` | If true, the bot will message you if the script crashes. |
+| ↳ `signalSender` | No* | - | Your phone number (+12345...). *Required if `notifySignal` is true. |
+| ↳ `signalGroup` | No* | - | Your Base64 Group ID. *Required if `notifySignal` is true. |
+| ↳ `signalEndpoint` | No* | - | The URL of your Signal API container. *Required if `notifySignal` is true. |
+
+**Minimal `config.json`:**
+```json
+{
+    "urlFile": "/config/urls.json"
+}
+```
+
+**Full `config.json` (With Signal):**
+```json
+{
+    "urlFile": "/config/urls.json",
+    "notifySignal": true,
+    "checkInterval": 60,
+    "notifyErrors": true,
+    "logLevel": "info",
+    "signalSender": "+15551234567",
+    "signalGroup": "group.your_base64_group_id_here==",
+    "signalEndpoint": "http://signal-api:9120"
+}
+```
 
 ### 2. `urls.json` (Podcast List)
 This file defines which podcasts to monitor and how to filter them.
 
-| Option | Description |
-| :--- | :--- |
-| `name` | Friendly name for the podcast (used for folder naming). |
-| `url` | The RSS feed URL. |
-| `monthsBack` | Only download episodes published within this many months. |
-| `filter` | Boolean. Set to `true` to enable keyword filtering. |
-| ↳ `filter_Include` | List of keywords. An episode title MUST contain at least one of these to be downloaded. |
-| ↳ `filter_Exclude` | List of keywords. If an episode title contains any of these, it will be skipped. |
-| `manual_only` | Boolean. If `true`, the script ignores the RSS feed and only looks at the list below. |
-| ↳ `manual_episode_list` | A list of specific episode titles to download regardless of date or filters. |
+| Option | Required | Default | Description |
+| :--- | :---: | :--- | :--- |
+| `name` | **Yes** | - | Friendly name for the podcast (used for folder naming). |
+| `url` | **Yes** | - | The RSS feed URL. |
+| `monthsBack` | No | `1` | Only download episodes published within this many months. |
+| `filter` | No | `false` | Set to `true` to enable keyword filtering. |
+| ↳ `filter_Include` | No | `[]` | Keywords that MUST be in the title (logical OR). |
+| ↳ `filter_Exclude` | No | `[]` | Keywords to skip (logical OR). |
+
+**Example `urls.json` (Minimal):**
+```json
+{
+    "podcast": [
+        {
+            "name": "TheLastOfUs",
+            "url": "https://feeds.megaphone.fm/theofficialthelastofuspodcast"
+        }
+    ]
+}
+```
+
+**Example `urls.json` (Full):**
+```json
+{
+    "podcast": [
+        {
+            "name": "TheLastOfUsHbo",
+            "monthsBack": 1,
+            "url": "https://feeds.megaphone.fm/WMHY3005782945",
+            "filter": false
+        },
+        {
+            "name": "TheLastOfUs",
+            "monthsBack": 1,
+            "url": "https://feeds.megaphone.fm/theofficialthelastofuspodcast",
+            "filter": false
+        },
+        {
+            "name": "EndOfAllHope",
+            "monthsBack": 10,
+            "url": "https://feeds.simplecast.com/9nWOf4Xi",
+            "filter": false
+        }
+    ]
+}
+```
 
 ## How to Use
 
 ### 1. Docker Deployment (Recommended)
-The most resilient way to run PodVault is via Docker. You can pull the pre-built image directly from the GitHub Container Registry.
+Docker is the easiest way to run PodVault as it bundles FFmpeg and all dependencies.
 
 **Run the container:**
 ```bash
@@ -72,14 +129,15 @@ docker run -d \
 ```
 
 **Alternative: Build locally**
-If you prefer to build the image yourself:
 ```bash
 docker build -t podvault:local .
 ```
 
 ### 2. Running Locally (Outside Docker)
 If you want to run the script directly on your machine:
+
 - **Requirements:** Python 3.13+ and FFmpeg must be installed and in your system PATH.
+- **Setup:** Create a `config/` directory in the project root and place your `config.json` and `urls.json` inside it.
 - **Install dependencies:**
   ```bash
   pip install -r requirements.txt

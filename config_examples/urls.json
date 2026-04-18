@@ -1,0 +1,34 @@
+{
+    "podcast": [
+        {
+            "name": "TheLastOfUsHbo",
+            "monthsBack": 1,
+            "url": "https://feeds.megaphone.fm/WMHY3005782945",
+            "filter": false,
+            "filter_Include": [],
+            "filter_Exclude": [],
+            "manual_only": false,
+            "manual_episode_list": []
+        },
+        {
+            "name": "TheLastOfUs",
+            "monthsBack": 1,
+            "url": "https://feeds.megaphone.fm/theofficialthelastofuspodcast",
+            "filter": false,
+            "filter_Include": [],
+            "filter_Exclude": [],
+            "manual_only": false,
+            "manual_episode_list": []
+        },
+        {
+            "name": "EndOfAllHope",
+            "monthsBack": 10,
+            "url": "https://feeds.simplecast.com/9nWOf4Xi",
+            "filter": false,
+            "filter_Include": [],
+            "filter_Exclude": [],
+            "manual_only": false,
+            "manual_episode_list": []
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "urlFile":"/config/urls.json",
+    "notifySignal":true,
+    "checkInterval":3600,
+    "notifyErrors": false,
+    "logLevel": "info",
+    "signalSender":"+15551234567",
+    "signalGroup":"group.your_base64_group_id_here==",
+    "signalEndpoint":"http://10.0.0.2:9120"
+}
