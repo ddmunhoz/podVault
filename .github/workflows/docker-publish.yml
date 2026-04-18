@@ -45,8 +45,6 @@ jobs:
             suffix=
             prefix=
         env:
-          # metadata-action handles lowercase automatically if you pass it via the tags/images context correctly, 
-          # but let's be explicit with the image name construction.
           DOCKER_METADATA_ANNOTATIONS_LEVELS: manifest,index
 
       - name: Build and push Docker image
