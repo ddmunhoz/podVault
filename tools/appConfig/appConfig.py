@@ -16,10 +16,8 @@ class podcastEntry(pydantic.BaseModel):
     filter: bool = False  
     filter_Include: List[str] = []
     filter_Exclude: List[str] = []
-    manual_only: bool = False 
-    manual_episode_list: List[str] = []
 
-class podcastConfig(pydantic.BaseModel):
+class podcastConfig(pydantic.BaseModel) :
     podcast: List[podcastEntry]
 
 class appConfig(pydantic.BaseModel):
