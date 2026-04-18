@@ -1,0 +1,55 @@
+name: CI - Build Validation
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - 'config_examples/**'
+      - 'artifacts/**'
+      - '.gitignore'
+      - '.dockerignore'
+
+jobs:
+  validate-build:
+    name: Validate Docker Build
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build (Dry Run)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Generate CI Summary
+        run: |
+          echo "## ✅ CI Validation Successful" >> $GITHUB_STEP_SUMMARY
+          echo "The Docker image built successfully. This PR is safe to merge." >> $GITHUB_STEP_SUMMARY
+
+      - name: PR Comment - Success
+        if: success()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            ## Build Success
+            The Docker image for this PR was built successfully.
+            [View Build Summary](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+      - name: PR Comment - Failure
+        if: failure()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            ## Build Failure
+            The Docker image for this PR failed to build. Please check the logs.
+            [View logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
