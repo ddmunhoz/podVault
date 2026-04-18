@@ -1,0 +1,46 @@
+.common:
+  tags:
+    - &RUNNER nars
+
+stages:
+    - build
+    - cleanup
+    - deploy
+
+build_job:
+  stage: build
+  script:
+    - whoami
+    - id
+    - docker build --tag podvault:1.0 .
+
+  tags:
+    - *RUNNER
+
+cleanup_job:
+  stage: cleanup
+  script:
+    - whoami
+    - |
+      docker kill podvault || true
+      docker rm podvault || true
+
+  dependencies:
+    - build_job
+
+  tags:
+    - *RUNNER
+
+deploy_job:
+  stage: deploy
+  script:
+    - whoami
+    - |
+      cd /data/podcasts
+      docker compose up -d
+  
+  dependencies:
+    - cleanup_job
+
+  tags:
+    - *RUNNER

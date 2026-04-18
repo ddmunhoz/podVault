@@ -1,0 +1,17 @@
+.git
+.github
+.venv
+.vscode
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.db
+.DS_Store
+logs/
+podcasts/
+config/
+temp/
+artifacts/
+README.md
+.gitlab-ci.yml
