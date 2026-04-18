@@ -1,5 +1,10 @@
 <p align="center">
   <img src="artifacts/logo.svg" width="450" alt="PodVault Logo">
+  <br>
+  <img src="https://github.com/ddmunhoz/podVault/actions/workflows/ci.yml/badge.svg" alt="CI Status">
+  <a href="https://ko-fi.com/diegomunhoz">
+    <img src="https://img.shields.io/badge/Support%20the%20Archive-FF5E5B?style=for-the-badge&logo=kofi&logoColor=white" alt="Support on Ko-fi">
+  </a>
 </p>
 
 <p align="center">
@@ -22,6 +27,15 @@ I built **PodVault** to help you keep a little piece of the record for yourself,
 - **Metadata Fixer:** Cleans episode titles and show names, writing proper ID3 tags for a perfect local library.
 - **Artwork:** Fetches show or episode covers, resizes them to 3000x3000px, and embeds them directly into the MP3 metadata.
 - **Notifications:** Optional Signal messages with episode details and cover art once a download is complete.
+
+## Roadmap: The Future of the Vault
+
+Planned enhancements to the PodVault archive protocol:
+
+- [ ] **Hash-based Deduplication:** Ensure absolute archival integrity by verifying file contents.
+- [/] **Local RSS Generation:** (In-Progress) Generate a custom RSS feed from your local archive to point your podcast apps at your own private vault.
+- [ ] **Naming Convention Config:** Allow users to define custom patterns for archived filenames and folders.
+- [ ] **Web Dashboard:** A simple, searchable interface to browse and manage the local library.
 
 ## Configuration
 
@@ -169,7 +183,19 @@ podcasts/
 ### Signal Notifications
 Signal notifications are entirely optional. If enabled, you'll receive notifications like this:
 
-<img src="artifacts/signalNotifExample.png" width="400" alt="Signal Notification Example">
+<a href="artifacts/signalNotifExample.png">
+  <img src="artifacts/signalNotifExample.png" width="250" alt="Signal Notification Example">
+</a>
 
 ## License
 Do whatever you want with it.
+
+---
+
+<p align="center">
+  If PodVault helps you preserve your history, consider supporting the archive:
+  <br><br>
+  <a href='https://ko-fi.com/diegomunhoz' target='_blank'>
+    <img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+  </a>
+</p>
